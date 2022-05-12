@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { actionCreators } from "../state/index";
+
 import TextField from "@mui/material/TextField";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Button from "@mui/material/Button";
@@ -11,9 +16,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useDispatch } from "react-redux";
-import { actionCreators } from "../state/index";
-import { bindActionCreators } from "redux";
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';  
 
 const Input = styled("input")({
   display: "none",
@@ -54,11 +58,13 @@ const rows = [
 function Manage_Products() {
   const dispatch = useDispatch();
   const { add_product } = bindActionCreators(actionCreators, dispatch);
+  const [baseImage, setbaseImage] = useState({
+    product_image: "",
+  });
   const [Inputs, setInputs] = useState({
     product_name: "",
     price: "",
     product_description: "",
-    product_image: "",
   });
 
   const handleSubmit = () => {
@@ -68,9 +74,32 @@ function Manage_Products() {
   const handleInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setInputs({ ...Inputs, [name]: value });
-    // console.log(Inputs);
+    setInputs({ ...Inputs, [name]: value,product_image:baseImage });
+    console.log(Inputs);
   };
+
+  const handleUploadImage = async (e) => {
+    const file = e.target.files[0];
+    const base64File = await convertBase64(file);
+    setbaseImage(base64File);
+  };
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const products = useSelector((state) => state.Product_reducer);
 
   return (
     <>
@@ -114,7 +143,7 @@ function Manage_Products() {
             <div className="mt-2 d-flex">
               <label className="me-2" htmlFor="contained-button-file">
                 <Input
-                  onChange={handleInput}
+                  onChange={handleUploadImage}
                   name="product_image"
                   accept="image/*"
                   id="contained-button-file"
@@ -128,10 +157,10 @@ function Manage_Products() {
               <TextField
                 disabled
                 name="product_image"
-                value={Inputs.product_image}
+                value={baseImage.product_image? "Success" : "Empty"}
                 id="filled-disabled"
                 label="File-Name"
-                defaultValue="Hello World"
+                defaultValue="Empty"
                 variant="filled"
               />
             </div>
@@ -159,14 +188,22 @@ function Manage_Products() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row">
-                      {row.name}
+                {products.map((obj, idx) => (
+                  <StyledTableRow key={idx}>
+                    <Stack direction="row" spacing={2}>
+                      <Avatar
+                        alt={obj.product_name}
+                        src={obj.product_image}
+                        sx={{ width: 56, height: 56 }}
+                      />
+                    </Stack>
+                    <StyledTableCell align="">
+                      {obj.product_name}
                     </StyledTableCell>
-                    <StyledTableCell align="">{row.calories}</StyledTableCell>
-                    <StyledTableCell align="">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="">{row.carbs}</StyledTableCell>
+                    <StyledTableCell align="">
+                      {obj.product_description}
+                    </StyledTableCell>
+                    <StyledTableCell align="">{obj.price}</StyledTableCell>
                     <StyledTableCell align="">
                       <a href="/">Remove</a>
                     </StyledTableCell>

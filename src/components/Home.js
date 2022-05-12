@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,18 +8,16 @@ import { useSelector } from "react-redux";
 
 function Home() {
   const products = useSelector((state) => state.Product_reducer);
-  // console.log(products);
 
   const dataComponents = products.map((obj, idx) => {
-    // console.log(obj.product_name);
     return (
-      <div className="m-5">
+      <div className="m-1 border" style={{width: '348px', height: '236px'}}>
         <Card sx={{ maxWidth: 345 }}>
           <CardActionArea>
             <CardMedia
               component="img"
               height="140"
-              image="/static/images/cards/contemplative-reptile.jpg"
+              image={obj.product_image}
               alt="green iguana"
             />
             <CardContent>
@@ -37,7 +35,7 @@ function Home() {
   });
 
   return (
-    <main>
+    <main className="d-flex flex-wrap border justify-content-evenly">
       {dataComponents}
     </main>);
 }
