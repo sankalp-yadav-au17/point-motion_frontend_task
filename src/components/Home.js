@@ -11,7 +11,7 @@ function Home() {
 
   const dataComponents = products.map((obj, idx) => {
     return (
-      <div className="m-1 border" style={{width: '348px', height: '236px'}}>
+      <div className="m-1 " style={{width: '348px', height: '236px'}}>
         <Card sx={{ maxWidth: 345 }}>
           <CardActionArea>
             <CardMedia
@@ -35,7 +35,7 @@ function Home() {
   });
 
   return (
-    <main className="d-flex flex-wrap border justify-content-evenly">
+    <main className="d-flex flex-wrap  justify-content-evenly">
       {dataComponents}
     </main>);
 }
