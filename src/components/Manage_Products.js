@@ -57,7 +57,7 @@ const rows = [
 
 function Manage_Products() {
   const dispatch = useDispatch();
-  const { add_product } = bindActionCreators(actionCreators, dispatch);
+  const { add_product, remove_product } = bindActionCreators(actionCreators, dispatch);
   const [baseImage, setbaseImage] = useState({
     product_image: "",
   });
@@ -205,7 +205,7 @@ function Manage_Products() {
                     </StyledTableCell>
                     <StyledTableCell align="">{obj.price}</StyledTableCell>
                     <StyledTableCell align="">
-                      <a href="/">Remove</a>
+                      <a onClick={()=>{remove_product(idx)}} href="/">Remove</a>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
