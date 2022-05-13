@@ -43,17 +43,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("", "Frozen yoghurt", 6.0, 24, 4.0),
-  createData("", "Ice cream sandwich", 9.0, 37, 4.3),
-  createData("", "Eclair", 16.0, 24, 6.0),
-  createData("", "Cupcake", 3.7, 67, 4.3),
-  createData("", "Gingerbread", 16.0, 49, 3.9),
-];
 
 function Manage_Products() {
   const dispatch = useDispatch();
@@ -104,6 +93,7 @@ function Manage_Products() {
   return (
     <>
       <main>
+        <p className="text-danger"><b>Note:- Upload the image first</b></p>
         <div className="d-flex">
           <div className="m-2">
             <TextField
